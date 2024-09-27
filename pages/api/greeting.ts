@@ -1,6 +1,6 @@
 import knex from "../../clients/knex";
 
-export default async (req, res) => {
+export default async (req: any, res: any) => {
   if (req.method === "GET") {
     const [greeting] = await knex("greetings").limit(1);
 

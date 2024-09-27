@@ -1,3 +1,5 @@
+
+
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -10,7 +12,7 @@ const Welcome = () => {
   const [value, setValue] = useState("");
 
   useEffect(() => {
-    const fetchGreeting = async () => {
+  const fetchGreeting = async () => {
       const { status, data } = await axios.get("/api/greeting");
 
       if (status === 200) {
@@ -39,7 +41,7 @@ const Welcome = () => {
 
   return (
     <div className={s.welcomeContainer}>
-      <h1 className={s.welcome}>{greeting.body}</h1>
+      <h1 className={s.welcome} >{greeting.body}</h1>
       <div className={s.form}>
         <input
           className={s.input}
