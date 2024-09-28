@@ -1,13 +1,11 @@
 'use client';
 
-import Welcome from "../components/welcome";
-import ColorPicker from '../components/colorPicker';
+import PaletteCreator from "@/components/PalleteCreator";
 
 
 const Home = () => {
   return <>
-   <Welcome />
-   <ColorPicker/>
+   <PaletteCreator/>
    </>;
 };
 

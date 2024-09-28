@@ -618,6 +618,10 @@ body {
   color: hsl(var(--foreground));
 }
 
+.block {
+  display: block;
+}
+
 .flex {
   display: flex;
 }
@@ -630,23 +634,18 @@ body {
   justify-content: center;
 }
 
-.p-10 {
-  padding: 2.5rem;
+.bg-white {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
-.text-blue-100 {
+.p-5 {
+  padding: 1.25rem;
+}
+
+.text-black {
   --tw-text-opacity: 1;
-  color: rgb(219 234 254 / var(--tw-text-opacity));
-}
-
-.placeholder-primary::-moz-placeholder {
-  --tw-placeholder-opacity: 1;
-  color: rgb(28 28 34 / var(--tw-placeholder-opacity));
-}
-
-.placeholder-primary::placeholder {
-  --tw-placeholder-opacity: 1;
-  color: rgb(28 28 34 / var(--tw-placeholder-opacity));
+  color: rgb(0 0 0 / var(--tw-text-opacity));
 }
 
 :root {
