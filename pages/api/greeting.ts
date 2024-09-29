@@ -1,4 +1,4 @@
-import knex from "../../clients/knex";
+import knex from "../../clients/knex.js";
 
 export default async (req: any, res: any) => {
   if (req.method === "GET") {

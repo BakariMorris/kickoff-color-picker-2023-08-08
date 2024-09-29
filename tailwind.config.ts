@@ -7,16 +7,16 @@ const config: Config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-		screens: {
-			xs: '500px',
-			sm: '640px',
-			md: '768px',
-			lg: '960px',
-			xl: '1200px'
-		},
-		fontFamily: {
-			primary: 'var(--font-jetbrainsMono)'
-		},
+  	screens: {
+  		xs: '500px',
+  		sm: '640px',
+  		md: '768px',
+  		lg: '960px',
+  		xl: '1200px'
+  	},
+  	fontFamily: {
+  		primary: 'var(--font-jetbrainsMono)'
+  	},
   	extend: {
   		colors: {
   			background: 'hsl(var(--background))',
@@ -30,7 +30,7 @@ const config: Config = {
   				foreground: 'hsl(var(--popover-foreground))'
   			},
   			primary: {
-  				DEFAULT: '#1c1c22',
+  				DEFAULT: 'hsl(var(--primary))',
   				foreground: 'hsl(var(--primary-foreground))'
   			},
   			secondary: {
@@ -41,10 +41,11 @@ const config: Config = {
   				DEFAULT: 'hsl(var(--muted))',
   				foreground: 'hsl(var(--muted-foreground))'
   			},
-				accent: {
-					DEFAULT: '#00ff99',
-					hover: '#00e187',
-				},
+  			accent: {
+  				DEFAULT: 'hsl(var(--accent))',
+  				hover: '#00e187',
+  				foreground: 'hsl(var(--accent-foreground))'
+  			},
   			destructive: {
   				DEFAULT: 'hsl(var(--destructive))',
   				foreground: 'hsl(var(--destructive-foreground))'

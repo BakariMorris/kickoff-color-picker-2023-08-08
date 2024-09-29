@@ -1,71 +1,65 @@
 'use client';
 
-import { ReactNode, useEffect, useState } from 'react';
+import { ChangeEvent, ReactNode, useEffect, useState } from 'react';
 import ColorPicker from '@/components/ColorPicker/index';
 import styled from 'styled-components';
 import axios from 'axios';
-
-
-const PaletteContainer = styled.div`
-display: flex-col;
-`;
-
+import PaletteHeader from './header';
+import toast from 'react-hot-toast';
 
 const ColorPickerContainer = styled.div`
   display: flex;
-  justify-content: space-around;
 `;
-
-const SaveButton = styled.button`
-  display: block;
-  background-color: white;
-  color: black;
-`;
-
 
 interface IColor {
   id: number,
-  color: string
+  color: string,
 }
-
 
 
 const PaletteCreator = () => {
   const [colorPickers, setColorPickers] = useState<Array<ReactNode>>([]);
-  const [paletteData, setPaletteData] = useState<Array<IColor>>([]);
+  const [colorData, setColorData] = useState<Array<IColor>>([]);
+  const [paletteName, setPaletteName] = useState<string>('NoName');
 
   useEffect(() => {
+    //Remove this after dev
+    console.log('Running this useEffect again')
+    setColorData([])
     for (let i = 0; i < 5; i++) {
       setColorPickers((prevItems) => [...prevItems, <ColorPicker onChange={onChangeHandler} key={i} dataKey={i} />]);
-      setPaletteData((prevItem) => [...prevItem, { id: i, color: '#000' }])
+      setColorData((prevItem) => [...prevItem, { id: i, color: '#000' }])
     }
   }, [])
 
-  const onClickHandler = async() => {
+  const onSaveHandler = async () => {
     await saveNewPalette();
     // Save the current Palette data to the database
   }
 
   const saveNewPalette = async () => {
-    const { status, data } = await axios.put("/api/palette", {
-      colors: JSON.stringify(paletteData) 
-  });
+    const { status } = await axios.put("/api/palette", {
+      colors: JSON.stringify(colorData), 
+      name: paletteName
+    });
 
-    console.log(status, 'status')
-    console.log(data, 'data')
+    if(status === 200) {
+      toast.success('New Palette Saved successfully!')
+    } else {
+      toast.error(`There was an error with your request please try again!`)
+      throw new Error("Error connecting to server");
+    }
   }
 
-  const getPallete = async () => {
-    const { status, data } = await axios.get("/api/palette");
-    
-    console.log(status, 'status')
-    console.log(data, 'data')
+  const nameChangeHandler = (e:ChangeEvent) => {
+    const newName = e.target?.value;
+    setPaletteName(newName)
   }
 
 
   const onChangeHandler = (id: number, newColor: string) => {
     id = Number(id)
-    setPaletteData((prevItems) => {
+    setColorData((prevItems) => {
       const newItems = prevItems.map((item): IColor => (
         (item.id === id) ? { ...item, color: newColor } : item
       ))
@@ -75,13 +69,12 @@ const PaletteCreator = () => {
   }
 
   return (
-    <PaletteContainer>
+    <div>
+      <PaletteHeader saveHandler={onSaveHandler} nameChangeHandler={nameChangeHandler}/>
       <ColorPickerContainer>
         {colorPickers}
       </ColorPickerContainer>
-      
-      <SaveButton onClick={onClickHandler}>Save Palette Data</SaveButton>
-    </PaletteContainer>
+    </div>
   )
 }
 

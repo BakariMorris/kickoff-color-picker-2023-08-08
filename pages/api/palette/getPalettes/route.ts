@@ -1,15 +1,18 @@
-import knex from "../../clients/knex";
+import knex from "@/clients/knex";
 
 
 export default async (req: any, res: any) => {
   if (req.method === "GET") {
-    const [palettes] = await knex("palettes");
+    const rows = await knex.select('*').from("palettes").limit(10);
 
-    res.status(200).json(palettes);
+    res.status(200).json(rows);
   } else if (req.method === "PUT") {
     let newPaletteID;
     await knex("palettes")
-      .insert({ colors: req.body.colors })
+      .insert({
+         colors: req.body.colors,
+         name: req.body.name 
+        })
       .then(async (id) => {newPaletteID = id});
 
 
@@ -17,6 +20,4 @@ export default async (req: any, res: any) => {
   } else {
     res.status(404).json({ error: `${req.method} endpoint does not exist` });
   }
-
- 
 };
