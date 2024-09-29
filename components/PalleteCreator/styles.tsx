@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const HeaderContainer = styled.div`
-  padding: 8px;
+  padding: 16px;
   background-color: rgba(253,242,248,.2);
   display: flex;
 `;
@@ -36,3 +36,14 @@ export const DarkInput = styled.input`
   padding: 8px;
   border-radius: 8px;
 `
+export const ColorPickerContainer = styled.div`
+  display: flex;
+`;
+
+export const PaletteContainer = styled.div`
+  cursor: pointer;
+`
+
+export const SearchResultHeader = styled.h1`
+  font-size: 24px;
+`;

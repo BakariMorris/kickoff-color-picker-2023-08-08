@@ -1,44 +1,16 @@
 'use client';
-import React, { useState, useRef, useEffect, ChangeEventHandler } from 'react';
-import styled from 'styled-components';
+import React, { useState, useRef, useEffect } from 'react';
+import { ColorInput, ColorPickerContainer, SelectingCanvas } from './styles';
 
   interface PropTypes {
     onChange: Function,
-    dataKey: number
+    dataKey: number,
+    color: string
   }
 
-  const ColorPickerContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: end;
-    height: 95vh;
-    width: calc(100vw/5);
-    position: relative;
-  `;
-
-  const ColorInput = styled.input`
-    padding: 8px;
-    font-size: 24px;
-    font-weight: 700;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    height: 100px;
-    width: 150px;
-    margin-bottom: 70px;
-  `;
-
-  const SelectingCanvas = styled.canvas`
-    position: absolute;
-    bottom: 230px;
-    padding: 8px;
-    background-color: white;
-    max-width: 100%;
-  `;
-
-
 const ColorPicker = (props: PropTypes) => {
-  const [color, setColor] = useState('#ffffff');
+  const {color,onChange,dataKey} = props;
+
   const [showGradient, setShowGradient] = useState(false);
   const [isColorLight, setIsColorLight] = useState(true);
 
@@ -65,9 +37,9 @@ const ColorPicker = (props: PropTypes) => {
     setGradient()
   }, []);
 
+  // Changes text color to white or black depending on the background color
   useEffect(() => {
     const setLightOrDark = (color:string) => {
-      // Convert hex color to RGB
       let r, g, b;
       if (color.startsWith('#')) {
         const hex = color.replace('#', '');
@@ -108,8 +80,7 @@ const ColorPicker = (props: PropTypes) => {
       .toString(16)
       .slice(1)}`;
 
-    setColor(hexColor);
-    props.onChange(e.target.dataset.key, hexColor)
+    onChange(dataKey, hexColor)
     setShowGradient(false);
   };
 
@@ -122,7 +93,7 @@ const ColorPicker = (props: PropTypes) => {
         value={color}
         onClick={() => setShowGradient(true)}
       />
-      <SelectingCanvas data-key={props.dataKey} ref={gradientRef} onClick={handleGradientClick}
+      <SelectingCanvas data-key={dataKey} ref={gradientRef} onClick={handleGradientClick}
       style={{opacity: (showGradient) ? '1': '0'}} />
     </ColorPickerContainer>
   );

@@ -1,44 +1,40 @@
 'use client';
 
-import { ChangeEvent, ReactNode, useEffect, useState } from 'react';
+import { ChangeEvent, MouseEventHandler, ReactNode, useEffect,MouseEvent, useState } from 'react';
 import ColorPicker from '@/components/ColorPicker/index';
-import styled from 'styled-components';
 import axios from 'axios';
 import PaletteHeader from './header';
 import toast from 'react-hot-toast';
-
-const ColorPickerContainer = styled.div`
-  display: flex;
-`;
+import { ColorPickerContainer } from './styles';
 
 interface IColor {
-  id: number,
+  key: number,
   color: string,
 }
 
-
 const PaletteCreator = () => {
-  const [colorPickers, setColorPickers] = useState<Array<ReactNode>>([]);
-  const [colorData, setColorData] = useState<Array<IColor>>([]);
+  const [colorPickerData, setColorPickerData] = useState<Array<IColor>>([]);
   const [paletteName, setPaletteName] = useState<string>('NoName');
 
-  useEffect(() => {
-    //Remove this after dev
-    console.log('Running this useEffect again')
-    setColorData([])
+  const defaultPalette = [{color:'#01161E'}, {color:'#124559'}, {color:'#598392'}, {color:'#AEC3B0'}, {color:'#EFF6E0'}];
+  
+  const setColorPickerColors:any = (palette=defaultPalette) => {
+    const newPalettes:Array<IColor> = [];
     for (let i = 0; i < 5; i++) {
-      setColorPickers((prevItems) => [...prevItems, <ColorPicker onChange={onChangeHandler} key={i} dataKey={i} />]);
-      setColorData((prevItem) => [...prevItem, { id: i, color: '#000' }])
+      newPalettes.push({key: i, color: palette[i].color});
     }
-  }, [])
-
-  const onSaveHandler = async () => {
-    await saveNewPalette();
-    // Save the current Palette data to the database
+    
+    setColorPickerData(newPalettes);
   }
 
-  const saveNewPalette = async () => {
-    const { status } = await axios.put("/api/palette", {
+  useEffect(() => {
+    setColorPickerColors();
+  }, []);
+
+  const saveNewPalette = async ():Promise<void> => {
+    const colorData = colorPickerData.map((colorPicker:IColor) => ({id: colorPicker.key, color: colorPicker.color, name: paletteName}))
+
+    const { status } = await axios.put("/api/palette/setPalettes/route", {
       colors: JSON.stringify(colorData), 
       name: paletteName
     });
@@ -50,29 +46,39 @@ const PaletteCreator = () => {
       throw new Error("Error connecting to server");
     }
   }
-
-  const nameChangeHandler = (e:ChangeEvent) => {
+  
+  const nameChangeHandler = (e:any) => {
     const newName = e.target?.value;
     setPaletteName(newName)
   }
 
-
   const onChangeHandler = (id: number, newColor: string) => {
-    id = Number(id)
-    setColorData((prevItems) => {
-      const newItems = prevItems.map((item): IColor => (
-        (item.id === id) ? { ...item, color: newColor } : item
-      ))
+    setColorPickerData((prevItems) => {
+      const newItems = prevItems.map(
+          (item):IColor => (
+            (item.key == id) ? {...item, color: newColor} : item)
+          )
+
       return newItems;
     })
+  };
 
+
+  const renderColorPickers = ():Array<ReactNode> => {
+    const res = [];
+    for(let colorPicker of colorPickerData) {
+      res.push(<ColorPicker onChange={onChangeHandler} key={colorPicker.key} dataKey={colorPicker.key} color={colorPicker.color} />)
+    }
+
+    return res;
   }
+
 
   return (
     <div>
-      <PaletteHeader saveHandler={onSaveHandler} nameChangeHandler={nameChangeHandler}/>
+      <PaletteHeader saveHandler={saveNewPalette} nameChangeHandler={nameChangeHandler} setColorPickers={setColorPickerColors}/>
       <ColorPickerContainer>
-        {colorPickers}
+        {renderColorPickers()}
       </ColorPickerContainer>
     </div>
   )

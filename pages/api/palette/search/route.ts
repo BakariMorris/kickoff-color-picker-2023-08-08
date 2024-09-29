@@ -3,11 +3,12 @@ import knex from '@/clients/knex';
 export default async (req:any, res: any) => {
   
   if(req.method === 'GET') {
-    console.log(req.query.searchTerm)
+    if(!req.query.searchTerm)
+      return res.status(400).json({ message: 'Missing search query' });
     const matchingPalettes = await knex
     ('palettes')
-    .where({name: req.query.searchTerm})
-    .select('*');
+    //Auto Escapes
+    .whereLike('name', `%${req.query.searchTerm}%`);
 
     res.status(200).json(matchingPalettes);
   } else {

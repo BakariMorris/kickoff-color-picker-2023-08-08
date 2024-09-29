@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 *, ::before, ::after {
   --tw-border-spacing-x: 0;
   --tw-border-spacing-y: 0;
@@ -557,7 +559,8 @@ video {
 body {
   --tw-bg-opacity: 1;
   background-color: rgb(28 28 34 / var(--tw-bg-opacity));
-  font-family: var(--font-jetbrainsMono);
+  font-family: "Prompt", sans-serif;
+  letter-spacing: 2px;
   line-height: 2;
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
@@ -616,6 +619,7 @@ body {
 body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
+  font:
 }
 
 .block {
